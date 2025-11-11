@@ -150,27 +150,37 @@ def mae(y_true, y_pred):
 #4.init network params weights/biases
 #5.show param count + pack/unpack demo
 #6.forward on test set + compute MAE
-
+def get_args():
+    parser = argparse.ArgumentParser()
+    parser.add_argument(
+        "--csv",
+        type=str,
+        default="Concrete_Data_Yeh.csv",
+        help="Path to concrete CSV data.",
+    )
+    parser.add_argument(
+        "--layers",
+        type=int,
+        nargs="+",
+        default=[8, 16, 8, 1],
+        help="Layer sizes, including input and output.",
+    )
+    parser.add_argument(
+        "--acts",
+        type=str,
+        nargs="+",
+        default=["relu", "tanh", "identity"],
+        help="Activation functions for each layer .",    #(len = len(layers)-1)
+    )
+    parser.add_argument(
+        "--seed",
+        type=int,
+        default=42,
+        help="Random seed for weight init.",
+    )
+    return parser.parse_args()
 def main():
-    parser = argparse.ArgumentParser(description="ANN (Task 1) — forward only")
-    parser.add_argument("csv", help="Path to Concrete Compressive Strength CSV")
-    parser.add_argument("--layers", nargs="*", type=int, default=[8, 16, 8, 1],
-                        help="Layer sizes incl. input & output, e.g. 8 16 8 1")
-    parser.add_argument("--acts", nargs="*", type=str, default=["relu", "tanh", "identity"],
-                        help="Activations per layer (same length as layers-1)")
-    parser.add_argument("--seed", type=int, default=42, help="RNG seed")
-    args = parser.parse_args()
-
-    # Basic checks for this dataset
-    if args.layers[0] != 8:
-        raise SystemExit("Input layer must be 8 for this dataset.")
-    if args.layers[-1] != 1:
-        raise SystemExit("Output layer must be 1 for regression.")
-    if len(args.acts) != len(args.layers) - 1:
-        raise SystemExit("--acts length must equal len(--layers) - 1")
-    for a in args.acts:
-        if a not in ACT:
-            raise SystemExit(f"Unknown activation: {a}")
+    args = get_args()
 
     # Load data
     Xtr, Ytr, Xte, Yte = load_concrete(args.csv)
