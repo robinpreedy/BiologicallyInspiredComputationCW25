@@ -1,6 +1,9 @@
 # BiologicallyInspiredComputationCW25
+
+
+##Collaborators:
 > Follow this format: `[Full Name] - @[GitHubUsername] - [HW Matriculation Number]`
-Collaborators:
+
 1. Yasin Tella - Yasin-Tella - H00399384
 2. Robin Preedy - robinpreedy - H00401245
 
