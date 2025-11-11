@@ -206,6 +206,3 @@ def main():
     print("  • unpack_params(theta) -> (W, B)")
     print("  • pred = forward(Xval, W, B, acts); fitness = MAE(yval, pred)  (minimize)")
     
-if __name__ == "__main__":
-    main()
-    
