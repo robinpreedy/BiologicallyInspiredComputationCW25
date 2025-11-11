@@ -152,7 +152,7 @@ def mae(y_true, y_pred):
 #6.forward on test set + compute MAE
 
 def main():
-    parser = argparse.ArgumentParser(description="Simple ANN (Task 1) — forward only")
+    parser = argparse.ArgumentParser(description="ANN (Task 1) — forward only")
     parser.add_argument("csv", help="Path to Concrete Compressive Strength CSV")
     parser.add_argument("--layers", nargs="*", type=int, default=[8, 16, 8, 1],
                         help="Layer sizes incl. input & output, e.g. 8 16 8 1")
@@ -201,7 +201,7 @@ def main():
         print(f"  {args.layers[i]} -> {args.layers[i+1]}  act={args.acts[i]}")
     print(f"Test MAE with random weights: {test_mae:.4f}")
 
-    print("How PSO will use this later:")
+    print("PSO use:")
     print("  • Treat theta (flat vector) as a particle position.")
     print("  • unpack_params(theta) -> (W, B)")
     print("  • pred = forward(Xval, W, B, acts); fitness = MAE(yval, pred)  (minimize)")
