@@ -1,6 +1,5 @@
-from scripts.task4_train__EVAL import run_EVAL
+from scripts.task4_train__EVAL import train_ANN
 
-run_EVAL("Concrete_Data_Yeh.csv")
+train_ANN("Concrete_Data_Yeh.csv")
 
-#python task4_train_eval.py --csv data/Concrete_Data_Yeh.csv
-# Run directly
+#python task4_train__EVAL.py --csv Concrete_Data_Yeh.csv
