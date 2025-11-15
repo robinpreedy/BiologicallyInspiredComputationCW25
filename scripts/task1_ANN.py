@@ -175,3 +175,5 @@ def main():
     print(f"{args.layers[1]} -> {args.layers[2]} (tanh)")
     print(f"{args.layers[2]} -> {args.layers[3]} (identity)")
     print("Testing MAE w/ ran weights:", round(test_mae, 4))
+if __name__ == "__main__":
+    main()
