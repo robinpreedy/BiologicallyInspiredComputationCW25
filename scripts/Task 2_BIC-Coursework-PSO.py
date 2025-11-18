@@ -2,23 +2,25 @@
 import numpy as np
 
 # desired swam size usually 10 - 100 Line 1
-swarmsize = 10
+swarmsize = 100
 # Dimension the size of plane that the swarm can move on and where the particles get their position from
-dimension = 1
+dimension = 2 # works with 1 and 2 dimensions, when runing 1 dimensions n = len(x) error may occur
 
 #Line 7
 class Particle:
     def __init__(self, dim ):
         #initialize a particle with random weights and velocities
-        self.position = np.random.uniform(-1,1, dim) #Line 9  x^-> (position)
-        self.velocity = np.random.uniform(-1,1, dim)# Line 9 v^-> (velocity)
+        self.position = np.random.uniform(0.0,1.0, dim) #Line 9  x^-> (position)
+        self.velocity = np.random.uniform(0.0,1.0, dim)# Line 9 v^-> (velocity)
 
 def fitness_Rastrign(x):
+    #print(x)
     n = len(x)
     return 10 * n + sum([xi ** 2 - 10 * np.cos(2 * np.pi * xi) for xi in x])
 
 def PSO (iter,swarmSize,fitnessFunc, dim):
-
+    #Boundaries
+    boundary = [0.01, 5.0]
     #Tracker for the current iteration
     iterNum = 0
     # List of best positions  Line 10
@@ -88,9 +90,17 @@ def PSO (iter,swarmSize,fitnessFunc, dim):
 
         for particle in particles: #Line 25
             particle.position = particle.position + (epsilon * particle.velocity)  # Line 26
+            # basic boundary handling
+            for i in range(len(particle.position)):
+                if (particle.position[i] < boundary[0]):    # Min Boundary
+                    particle.position[i] =  boundary[0]
+                if (particle.position[i] > boundary[1]):    # Max Boundary
+                    particle.position[i] =  boundary[1]
 
         # Evaluate fitness of each particle
+        #print(particle.position)
         fitness_values = np.array([fitnessFunc(particle.position) for particle in particles])
+
 
         # Update best positions and fitness values
         # change to < for minimzing quiestions or > for maximising
@@ -114,14 +124,14 @@ def PSO (iter,swarmSize,fitnessFunc, dim):
         #update gamma to be previous global fittest position
         gamma = delta
         #update delta to be new global fittest position
-        delta = swarm_best_position
+        delta = swarm_best_position.tolist()
         iterNum += 1
 
 # particle that returns the global best fitness and global best position at the end 
-    return swarm_best_position, swarm_best_fitness# Line 28
+    return delta, swarm_best_fitness# Line 28
 
 
 p1 = Particle(dimension)
 f1 = fitness_Rastrign(p1.position)
-Pso1 = PSO(100,10,fitness_Rastrign, dimension)
+Pso1 = PSO(100,swarmsize,fitness_Rastrign, dimension)
 print(Pso1)
