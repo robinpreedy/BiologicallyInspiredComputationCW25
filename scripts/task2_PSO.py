@@ -128,10 +128,11 @@ def PSO (iter,swarmSize,fitnessFunc, dim):
         iterNum += 1
 
 # particle that returns the global best fitness and global best position at the end 
-    return delta, swarm_best_fitness# Line 28
+    return delta # Line 28
 
 
 p1 = Particle(dimension)
 f1 = fitness_Rastrign(p1.position)
 Pso1 = PSO(120,swarmsize,fitness_Rastrign, dimension)
 print(Pso1)
+
