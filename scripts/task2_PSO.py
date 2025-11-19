@@ -5,7 +5,7 @@ import numpy as np
 swarmsize = 100
 # Dimension the size of plane that the swarm can move on and where the particles get their position from
 dimension = 2 # works with 1 and 2 dimensions, when runing 1 dimensions n = len(x) error may occur
-
+# swap > to < and argmax to argmin when it comes to fitness values to switch between minimising and maximising problems
 #Line 7
 class Particle:
     def __init__(self, dim ):
@@ -20,7 +20,7 @@ def fitness_Rastrign(x):
 
 def PSO (iter,swarmSize,fitnessFunc, dim):
     #Boundaries
-    boundary = [0.01, 5.0]
+    boundary = [0.01, 4.0]
     #Tracker for the current iteration
     iterNum = 0
     # List of best positions  Line 10
@@ -51,16 +51,14 @@ def PSO (iter,swarmSize,fitnessFunc, dim):
     best_fitness = np.array([fitnessFunc(particle.position) for particle in particles])
     
     #Line 15 Global best pos
-    # switch to np.argmin for a minimising problem
-    swarm_best_position = best_positions[np.argmin(best_fitness)]
-    # switch to np.min for a minimising problem
+    swarm_best_position = best_positions[np.argmax(best_fitness)]
     #Global best fitness
-    swarm_best_fitness = np.min(best_fitness)
+    swarm_best_fitness = np.max(best_fitness)
 
 
     # variable that stores the previous fittest position of the local particle
-    # gets the best position of current particles by grabbing the particle that corresponds to the min or max fitness
-    beta = best_positions[np.argmin(best_fitness)]  # Line 17
+    # gets the best position of current particles by grabbing the particle that corresponds to the min(np.argmin) or max fitness
+    beta = best_positions[np.argmax(best_fitness)]  # Line 17
 
     # variable that stores the previous fittest position of informants of the Local particle position including the particle itself
     # Gamma might be the previous global fittest position
@@ -104,7 +102,7 @@ def PSO (iter,swarmSize,fitnessFunc, dim):
 
         # Update best positions and fitness values
         # change to < for minimzing quiestions or > for maximising
-        improved_indices = np.where(fitness_values < best_fitness, 1, 0)
+        improved_indices = np.where(fitness_values > best_fitness, 1, 0)
         indices = list(improved_indices)
         #print(indices)
         index = []
@@ -117,9 +115,9 @@ def PSO (iter,swarmSize,fitnessFunc, dim):
         for i in range(len(index)):
             best_positions[index[i]] = particles[index[i]].position
             best_fitness[index[i]] = fitness_values[index[i]]
-        if np.min(fitness_values) < swarm_best_fitness:
-            swarm_best_position = particles[np.argmin(fitness_values)].position
-            swarm_best_fitness = np.min(fitness_values)
+        if np.max(fitness_values) > swarm_best_fitness:
+            swarm_best_position = particles[np.argmax(fitness_values)].position
+            swarm_best_fitness = np.max(fitness_values)
 
         #update gamma to be previous global fittest position
         gamma = delta
@@ -128,11 +126,10 @@ def PSO (iter,swarmSize,fitnessFunc, dim):
         iterNum += 1
 
 # particle that returns the global best fitness and global best position at the end 
-    return delta # Line 28
+    return delta, swarm_best_fitness # Line 28
 
 
 p1 = Particle(dimension)
 f1 = fitness_Rastrign(p1.position)
 Pso1 = PSO(120,swarmsize,fitness_Rastrign, dimension)
 print(Pso1)
-
