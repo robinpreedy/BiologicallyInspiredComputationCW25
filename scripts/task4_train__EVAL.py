@@ -20,6 +20,7 @@ def train_ANN(
     layers=[8, 16, 8, 1],
     activate=["relu", "tanh", "identity"],
     startVal=0,
+    #hyperparameter for number of weight trials, also can be altered at IF statement, line 58
     steps=1000
 ):
     """Loads the data, splits into train/test, builds the ANN,
@@ -55,6 +56,8 @@ def train_ANN(
             bestFlat = trial.copy()
             #print every 200 runs to break up output but can change
         if i % 200 == 0:
+            #hyperparam:
+            #if i % 1000 == 0:
             print("run", i, "MAE:", bestError)
 
     weight_y, bias_y = unpack_params(bestFlat, W_shapes, B_shapes)

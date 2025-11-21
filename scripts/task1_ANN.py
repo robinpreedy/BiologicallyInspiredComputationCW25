@@ -46,11 +46,14 @@ def init_params(layer_sizes, randomNo):
         n_in = layer_sizes[i]
         n_out = layer_sizes[i + 1]
 
-        w_i = randomNo.normal(0.0, 0.1, size=(n_in, n_out)).astype(np.float64)
-        b_i = np.zeros((n_out,), dtype=np.float64)
+        i_weight = randomNo.normal(0.0, 0.1, size=(n_in, n_out)).astype(np.float64)
+        #hyperparam: 
+        #i_weight = randomNo.normal(0.0, 0.05...
+        #i_weight = randomNo.normal(0.0, 0.2...
+        i_bias = np.zeros((n_out,), dtype=np.float64)
         #biases=0 to start off and testing
-        weight.append(w_i)
-        biases.append(b_i)
+        weight.append(i_weight)
+        biases.append(i_bias)
 
     return weight, biases
 
@@ -58,16 +61,16 @@ def init_params(layer_sizes, randomNo):
 # PSO LATER(FLAT / UNFLAT)
 def count_params(weight, biases):
     tot = 0
-    for w_i, b_i in zip(weight, biases):
-        tot += w_i.size + b_i.size
+    for i_weight, i_bias in zip(weight, biases):
+        tot += i_weight.size + i_bias.size
     return tot
 #matrices=> large vector
 #due to task4's rand search
 def pack_params(weight, biases):
     flat = []
-    for w_i, b_i in zip(weight, biases):
-        flat.append(w_i.ravel())
-        flat.append(b_i.ravel())
+    for i_weight, i_bias in zip(weight, biases):
+        flat.append(i_weight.ravel())
+        flat.append(i_bias.ravel())
     return np.concatenate(flat)
 #turns back ito matrices
 #shapes neeed to be known
@@ -76,12 +79,12 @@ def unpack_params(flat, shape_w, shape_b):
     offset = 0
     for (rows, cols), (d,) in zip(shape_w, shape_b):
         size_w = rows * cols
-        w_i = flat[offset:offset + size_w].reshape(rows, cols)
+        i_weight = flat[offset:offset + size_w].reshape(rows, cols)
         offset += size_w
-        b_i = flat[offset:offset + d]
+        i_bias = flat[offset:offset + d]
         offset += d
-        weight.append(w_i)
-        biases.append(b_i)
+        weight.append(i_weight)
+        biases.append(i_bias)
     return weight, biases
 
 
